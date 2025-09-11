@@ -3,17 +3,17 @@ import prisma from "./prismaClient/prisma/index.js";
 
 const app = express();
 app.use(express.json());
-
 /**
  * Create User
  * prisma.user.create
  */
 app.post("/users", async (req, res) => {
+    const { body } = req;
     try {
         const response = await prisma.user.create({
             data: {
-                name: req.body.name,
-                email: req.body.email,
+                name: body.name,
+                email: body.email,
                 verified: false,
             },
         });
@@ -29,9 +29,10 @@ app.post("/users", async (req, res) => {
  * prisma.user.createMany
  */
 app.post("/users/many", async (req, res) => {
+    const { body } = req;
     try {
         const response = await prisma.user.createMany({
-            data: req.body.users, // [{name, email}, ...]
+            data: body.users, // [{name, email}, ...]
         });
         res.json(response);
     } catch (error) {
@@ -59,9 +60,10 @@ app.get("/users", async (req, res) => {
  * prisma.user.findUnique
  */
 app.get("/users/:id", async (req, res) => {
+    const { params } = req;
     try {
         const response = await prisma.user.findUnique({
-            where: { id: req.params.id },
+            where: { id: params.id },
         });
         res.json(response ?? "No User Found");
     } catch (error) {
@@ -75,9 +77,10 @@ app.get("/users/:id", async (req, res) => {
  * prisma.user.findFirst
  */
 app.get("/users/email/:email", async (req, res) => {
+    const { params } = req;
     try {
         const response = await prisma.user.findFirst({
-            where: { email: req.params.email },
+            where: { email: params.email },
         });
         res.json(response ?? "No User Found");
     } catch (error) {
@@ -105,10 +108,11 @@ app.get("/users-count", async (req, res) => {
  * prisma.user.update
  */
 app.put("/users/:id", async (req, res) => {
+    const { body, params } = req;
     try {
         const response = await prisma.user.update({
-            where: { id: req.params.id },
-            data: { verified: req.body.verified },
+            where: { id: params.id },
+            data: { verified: body.verified },
         });
         res.json(response);
     } catch (error) {
@@ -138,11 +142,12 @@ app.put("/users", async (req, res) => {
  * prisma.user.upsert
  */
 app.post("/users/upsert", async (req, res) => {
+    const { body } = req;
     try {
         const response = await prisma.user.upsert({
-            where: { email: req.body.email },
-            update: { name: req.body.name },
-            create: { name: req.body.name, email: req.body.email },
+            where: { email: body.email },
+            update: { name: body.name },
+            create: { name: body.name, email: body.email },
         });
         res.json(response);
     } catch (error) {
@@ -156,9 +161,10 @@ app.post("/users/upsert", async (req, res) => {
  * prisma.user.delete
  */
 app.delete("/users/:id", async (req, res) => {
+    const { params } = req;
     try {
         const response = await prisma.user.delete({
-            where: { id: req.params.id },
+            where: { id: params.id },
         });
         res.json(response);
     } catch (error) {
