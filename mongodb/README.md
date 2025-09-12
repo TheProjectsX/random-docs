@@ -47,12 +47,12 @@ project/
 node index.js
 ```
 
-## Notes
+## NOTE:
 
 -   Default local port: `27017`
 -   GUI tool: [MongoDB Compass](https://www.mongodb.com/products/compass)
 -   Use the official driver:
 
-    ```js
-    const { MongoClient } = require("mongodb");
-    ```
+```js
+const { MongoClient } = require("mongodb");
+```
