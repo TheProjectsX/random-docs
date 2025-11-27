@@ -5,8 +5,8 @@
 ### Download and Setup zsh and plugins
 
 ```bash
-sudo apt update && sudo apt upgrade
-sudo apt install zsh git curl
+sudo apt update -y && sudo apt upgrade -y
+sudo apt install zsh git curl -y
 
 # Make zsh your default shell
 chsh -s $(which zsh)
@@ -26,7 +26,7 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.
 - Has exported paths for `NVM` and `NVM bash completion`
 
 ```bash
-rm -rf .zshrc # Remove auto generated zsh config
+mv ~/.zshrc ~/.zshrc.bak # Remove auto generated zsh config (we are renaming it to a bak file)
 nano .zshrc
 ```
 
@@ -95,7 +95,7 @@ sudo systemctl stop mongod
 nano /etc/mongod.conf
 ```
 
-- Paste the Below yaml under `net` or `replication`
+- Paste the Below yaml in the top level
 
 ```yaml
 replication:
