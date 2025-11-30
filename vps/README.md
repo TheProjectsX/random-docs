@@ -1,5 +1,24 @@
 # VPS Setup for MERN Stack
 
+## Login to VPS
+
+You will have an VPS IP Address, Username and Password.
+
+-   To Login to VPS, open any Command Shell (CMD for Windows, Terminal for Ubuntu).
+-   Type and Enter:
+
+```bash
+ssh root@0.0.0.0
+# Here ssh is connecting us to out VPS
+# root is Username
+# 0.0.0.0 is Your VPS IP address
+```
+
+-   After that, if asks for any confirmation, type `yes` and hit enter.
+-   Then it will ask for Password, type of paste your password and hit enter.
+-   NOTE: The password won't be visible.
+You can also use some SSH Host manager like Termius
+
 ## Install Zsh
 
 ### Download and Setup zsh and plugins
@@ -21,9 +40,9 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.
 
 ### Update zshrc with Custom configuration
 
-- Has `robbyrussell` as terminal theme
-- Has syntax highlighting and auto suggestions plugin
-- Has exported paths for `NVM` and `NVM bash completion`
+-   Has `robbyrussell` as terminal theme
+-   Has syntax highlighting and auto suggestions plugin
+-   Has exported paths for `NVM` and `NVM bash completion`
 
 ```bash
 mv ~/.zshrc ~/.zshrc.bak # Remove auto generated zsh config (we are renaming it to a bak file)
@@ -83,32 +102,32 @@ mongosh
 
 ### Enable Replica set
 
-- Stop MongoDB Service
+-   Stop MongoDB Service
 
 ```bash
 sudo systemctl stop mongod
 ```
 
-- Edit MongoDB Config
+-   Edit MongoDB Config
 
 ```bash
 nano /etc/mongod.conf
 ```
 
-- Paste the Below yaml in the top level
+-   Paste the Below yaml in the top level
 
 ```yaml
 replication:
-  replSetName: "rs0"
+    replSetName: "rs0"
 ```
 
-- Start MongoDB
+-   Start MongoDB
 
 ```bash
 sudo systemctl start mongod
 ```
 
-- Initialize and check Replica set
+-   Initialize and check Replica set
 
 ```bash
 mongosh
@@ -190,11 +209,11 @@ sudo ufw allow 443/tcp
 sudo ufw reload
 ```
 
-- Nginx files are located in `/etc/nginx` directory.
-- You can use `conf.d` directory to add project configurations to nginx
-- For Frontend, [Follow this config](./files/nginx.conf)
-- For Backend, [Follow this config](./files/api.nginx.conf)
-- NOTE: It's better to name your conf's with the domain name: `website.conf` / `api.website.conf`
+-   Nginx files are located in `/etc/nginx` directory.
+-   You can use `conf.d` directory to add project configurations to nginx
+-   For Frontend, [Follow this config](./files/nginx.conf)
+-   For Backend, [Follow this config](./files/api.nginx.conf)
+-   NOTE: It's better to name your conf's with the domain name: `website.conf` / `api.website.conf`
 
 ```bash
 # Check Configurations
