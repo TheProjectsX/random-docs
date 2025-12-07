@@ -161,8 +161,8 @@ ssh -T git@github.com
 # Enable
 sudo ufw enable
 
-# Allow port 22 (SSH). Same command applies for any other port
-sudo ufw allow 22
+# Allow SSH port (MUST). Same command applies for any other port
+sudo ufw allow ssh
 
 # Deny any port if needed
 sudo ufw deny PORT
@@ -211,9 +211,8 @@ sudo ufw reload
 
 -   Nginx files are located in `/etc/nginx` directory.
 -   You can use `conf.d` directory to add project configurations to nginx
--   For Frontend, [Follow this config](./files/nginx.conf)
--   For Backend, [Follow this config](./files/api.nginx.conf)
--   NOTE: It's better to name your conf's with the domain name: `website.conf` / `api.website.conf`
+-   [Follow this config](./files/nginx.conf)
+-   NOTE: It's better to name your conf's with the domain name: `website.com.conf` / `api.website.com.conf`
 
 ```bash
 # Check Configurations
