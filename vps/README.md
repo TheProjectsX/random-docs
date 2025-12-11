@@ -4,11 +4,13 @@
 Below scripts can do the whole manual work automatically. Used Bash to Create it. 
 ### Setup VPS
 ``` bash
+curl -fsSL https://raw.githubusercontent.com/TheProjectsX/random-docs/refs/heads/main/vps/setup/setup.sh | bash
 ```
 Or you can also copy paste [this file](./setup/setup.sh) in your VPS and run Manually.
 
 ### Create Nginx Configuration
 ``` bash
+curl -fsSL https://raw.githubusercontent.com/TheProjectsX/random-docs/refs/heads/main/vps/setup/nginx.sh | bash
 ```
 Or you can also copy paste [this file](./setup/nginx.sh) in your VPS and run Manually.
 
