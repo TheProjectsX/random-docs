@@ -1,5 +1,18 @@
 # VPS Setup for MERN Stack
 
+## One Click Installation
+Below scripts can do the whole manual work automatically. Used Bash to Create it. 
+### Setup VPS
+``` bash
+```
+Or you can also copy paste [this file](./setup/setup.sh) in your VPS and run Manually.
+
+### Create Nginx Configuration
+``` bash
+```
+Or you can also copy paste [this file](./setup/nginx.sh) in your VPS and run Manually.
+
+
 ## Login to VPS
 
 You will have an VPS IP Address, Username and Password.
@@ -183,7 +196,7 @@ sudo ufw status
 npm i -g pm2
 
 # Start an Application
-pm2 start npm --name "test_server" -- start
+pm2 start "npm run start" --name "test_server"
 
 # List processes
 pm2 ls
