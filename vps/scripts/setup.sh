@@ -212,7 +212,6 @@ log_info "Setting up GitHub SSH"
 read -p "Enter GitHub Email: " EMAIL </dev/tty
 
 if [ -f ~/.ssh/id_rsa ]; then
-    log_info "SSH key already exists, skipping keygen"
     rm -rf ~/.ssh/id_rsa
 fi
 
