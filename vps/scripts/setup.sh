@@ -30,23 +30,32 @@ if ! command -v zsh >/dev/null 2>&1; then
     log_info "Setting Zsh as the default shell..."
     sudo chsh -s "$(which zsh)" "$USER"
 else
-    log_info "Zsh already installed, skipping..."
+    log_info "Zsh is already installed, skipping..."
 fi
 
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     log_info "Installing Oh My Zsh..."
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 else
-    log_info "Oh My Zsh already installed, skipping..."
+    log_info "Oh My Zsh is already installed, skipping..."
 fi
 
 ZSH_CUSTOM=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}
 
 log_info "Installing zsh plugins..."
-[ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ] && \
+if [ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
     git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
-[ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ] && \
+    log_info "Installed zsh-autosuggestions plugin"
+else
+    log_info "zsh-autosuggestions plugin already installed"
+fi
+
+if [ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]; then
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+    log_info "Installed zsh-syntax-highlighting plugin"
+else
+    log_info "zsh-syntax-highlighting plugin already installed"
+fi
 
 # =========================
 # NVM + NodeJS
@@ -54,6 +63,8 @@ log_info "Installing zsh plugins..."
 if ! command -v nvm >/dev/null 2>&1; then
     log_info "Installing NVM..."
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+else
+    log_info "NVM is already installed, skipping..."
 fi
 
 export NVM_DIR="${XDG_CONFIG_HOME:-$HOME/.nvm}"
@@ -63,11 +74,11 @@ if ! command -v node >/dev/null 2>&1; then
     log_info "Installing LTS NodeJS..."
     nvm install --lts
 else
-    log_info "NodeJS already installed, skipping..."
+    log_info "NodeJS is already installed, skipping..."
 fi
 
 log_info "Installing PM2, Bun, and PNPM..."
-npm install -g pm2 bun pnpm || true
+npm install -g pm2 bun pnpm || log_info "PM2/Bun/PNPM already installed or failed"
 
 # =========================
 # .zshrc Setup
@@ -95,6 +106,9 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 EOF
+    log_info "Created new ~/.zshrc"
+else
+    log_info "~/.zshrc already configured, skipping..."
 fi
 
 # =========================
@@ -126,7 +140,7 @@ if ! command -v mongod >/dev/null 2>&1; then
     sudo apt update -y
     sudo apt install -y mongodb-org
 else
-    log_info "MongoDB already installed, skipping..."
+    log_info "MongoDB is already installed, skipping..."
 fi
 
 log_info "Ensuring MongoDB is running..."
@@ -153,13 +167,15 @@ EOF
         log_info "Initiating replica set..."
         mongosh --quiet --eval "rs.initiate()" >/dev/null 2>&1
     fi
+else
+    log_info "MongoDB replication already configured, skipping..."
 fi
 
 # =========================
 # UFW Setup
 # =========================
 log_info "Configuring UFW firewall..."
-sudo ufw enable || true
+sudo ufw enable || log_info "UFW already enabled"
 sudo ufw allow ssh
 sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
@@ -172,7 +188,7 @@ if ! command -v nginx >/dev/null 2>&1; then
     log_info "Installing Nginx..."
     sudo apt install -y nginx
 else
-    log_info "Nginx already installed, skipping..."
+    log_info "Nginx is already installed, skipping..."
 fi
 
 sudo systemctl enable --now nginx
@@ -187,6 +203,7 @@ if [ -f ~/.ssh/id_rsa ]; then
     log_info "SSH key already exists, skipping keygen"
 else
     ssh-keygen -t rsa -b 4096 -C "$EMAIL" -f ~/.ssh/id_rsa -N ""
+    log_info "Created new SSH key"
 fi
 
 eval "$(ssh-agent -s)"
