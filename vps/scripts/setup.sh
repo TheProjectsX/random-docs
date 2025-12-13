@@ -187,7 +187,7 @@ fi
 # UFW Setup
 # =========================
 log_info "Configuring UFW firewall..."
-sudo ufw enable
+sudo ufw --force enable
 sudo ufw allow ssh
 sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
