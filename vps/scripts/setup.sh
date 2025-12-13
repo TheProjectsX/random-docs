@@ -77,8 +77,19 @@ else
     log_info "NodeJS is already installed, skipping..."
 fi
 
-log_info "Installing PM2, Bun, and PNPM..."
-npm install -g pm2 bun pnpm || log_info "PM2/Bun/PNPM already installed or failed"
+
+# =========================
+# PM2, Bun and PNPM
+# =========================
+log_info "Checking and installing PM2, Bun, and PNPM..."
+for pkg in pm2 bun pnpm; do
+    if npm list -g --depth=0 "$pkg" >/dev/null 2>&1; then
+        log_info "$pkg is already installed globally, skipping..."
+    else
+        log_info "Installing $pkg globally..."
+        npm install -g "$pkg"
+    fi
+done
 
 # =========================
 # .zshrc Setup
