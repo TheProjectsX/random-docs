@@ -10,8 +10,8 @@ RED='\033[0;31m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 
-log_info() { echo; echo -e "${GREEN}[INFO]${NC} $1"; }
-log_error() { echo -e "${RED}[ERROR]${NC} $1"; }
+log_info() { echo -e "\n${GREEN}[INFO]${NC} $1"; }
+log_error() { echo -e "\n${RED}[ERROR]${NC} $1"; }
 log_status() { echo -e "${BLUE}[STATUS]${NC} $1"; }
 
 # =========================
@@ -209,7 +209,7 @@ sudo systemctl enable --now nginx
 # GitHub SSH
 # =========================
 log_info "Setting up GitHub SSH"
-read -p "Enter GitHub Email: " EMAIL
+read -p "Enter GitHub Email: " EMAIL </dev/tty
 
 if [ -f ~/.ssh/id_rsa ]; then
     log_info "SSH key already exists, skipping keygen"
@@ -224,15 +224,14 @@ ssh-add ~/.ssh/id_rsa
 # =========================
 # Status Checks
 # =========================
-log_info "Checking final service statuses..."
+log_info "Checking final service statuses...\n"
 log_status "MongoDB service: $(systemctl is-active mongod)"
 log_status "Nginx service: $(systemctl is-active nginx)"
 
 # =========================
 # Version Info
 # =========================
-echo
-log_status "Node version: $(node -v)"
+log_status "\nNode version: $(node -v)"
 log_status "NPM version: $(npm -v)"
 log_status "Zsh version: $(zsh --version)"
 log_status "Default shell: $SHELL"
