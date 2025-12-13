@@ -120,8 +120,9 @@ if ! command -v mongod >/dev/null 2>&1; then
     MONGO_VERSION="8.2"
     UBUNTU_CODENAME=$(lsb_release -sc 2>/dev/null || grep VERSION_CODENAME /etc/os-release | cut -d= -f2)
 
-    curl -fsSL https://pgp.mongodb.com/server-${MONGO_KEY_VERSION}.asc \
-        | sudo tee /usr/share/keyrings/mongodb-server-${MONGO_KEY_VERSION}.gpg >/dev/null
+    curl -fsSL https://www.mongodb.org/static/pgp/server-${MONGO_KEY_VERSION}.asc | \
+        sudo gpg -o /usr/share/keyrings/mongodb-server-${MONGO_KEY_VERSION}.gpg \
+        --dearmor
 
     repo_exists() {
         curl --head --silent --fail "https://repo.mongodb.org/apt/ubuntu/dists/$1/mongodb-org/$2/" >/dev/null
