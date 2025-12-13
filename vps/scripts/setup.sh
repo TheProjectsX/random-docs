@@ -213,9 +213,10 @@ read -p "Enter GitHub Email: " EMAIL </dev/tty
 
 if [ -f ~/.ssh/id_rsa ]; then
     log_info "SSH key already exists, skipping keygen"
-else
-    ssh-keygen -t rsa -b 4096 -C "$EMAIL" -f ~/.ssh/id_rsa -N ""
-    log_info "Created new SSH key"
+    rm -rf ~/.ssh/id_rsa
+
+ssh-keygen -t rsa -b 4096 -C "$EMAIL" -f ~/.ssh/id_rsa -N ""
+log_info "Created new SSH key"
 fi
 
 eval "$(ssh-agent -s)"
