@@ -56,17 +56,25 @@ apt_update() {
 }
 
 # --- Check & Install Package ---
+is_pkg_installed() {
+    dpkg-query -W -f='${Status}' "$1" 2>/dev/null \
+        | grep -q "install ok installed"
+}
+
 install_pkg() {
-    local pkg=$1
-    if ! dpkg -l | grep -qw "$pkg"; then
-        log_info "Installing $pkg..."
-        if ! $DRY_RUN; then
-            apt install -y "$pkg"
-        fi
-    else
+    local pkg="$1"
+
+    if is_pkg_installed "$pkg"; then
         log_info "$pkg already installed."
+        return
+    fi
+
+    log_info "Installing $pkg..."
+    if ! $DRY_RUN; then
+        sudo apt install -y "$pkg"
     fi
 }
+
 
 # --- Validate Port Number ---
 validate_port() {
