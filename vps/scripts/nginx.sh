@@ -77,6 +77,7 @@ validate_port() {
     return 0
 }
 
+# --- Check Free Port ---
 check_port_free() {
     local p=$1
     if lsof -i :"$p" | grep -q LISTEN; then
@@ -93,6 +94,12 @@ domain_resolves() {
     fi
     return 1
 }
+
+# --- Check Email is Valid ---
+is_valid_email() {
+    [[ "$1" =~ ^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$ ]]
+}
+
 
 # ===== Main =====
 log_info "Starting deployment script..."
@@ -143,6 +150,30 @@ if ! [[ "$DOMAIN" =~ ^([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2
     exit 1
 fi
 
+CERTBOT_EMAIL_FILE="/etc/letsencrypt/.certbot_email"
+CERTBOT_EMAIL=""
+
+if [ -f "$CERTBOT_EMAIL_FILE" ]; then
+    CERTBOT_EMAIL="$(sudo cat "$CERTBOT_EMAIL_FILE" | tr -d '[:space:]')"
+
+    if is_valid_email "$CERTBOT_EMAIL"; then
+        log_info "Using stored Certbot email: $CERTBOT_EMAIL"
+    else
+        log_error "Invalid email found in $CERTBOT_EMAIL_FILE"
+        CERTBOT_EMAIL=""
+    fi
+fi
+
+while ! is_valid_email "$CERTBOT_EMAIL"; do
+    read -p "Enter valid email for Let's Encrypt: " CERTBOT_EMAIL </dev/tty
+done
+
+# Persist (only once / overwrite invalid)
+echo "$CERTBOT_EMAIL" | sudo tee "$CERTBOT_EMAIL_FILE" >/dev/null
+sudo chmod 600 "$CERTBOT_EMAIL_FILE"
+
+log_info "Certbot email ready: $CERTBOT_EMAIL"
+
 # --- Paths & Config ---
 NGINX_CONF="/etc/nginx/conf.d/${DOMAIN}.conf"
 
@@ -188,9 +219,9 @@ if [ ! -d "/etc/letsencrypt/live/$DOMAIN" ]; then
     log_info "Issuing certificate for $DOMAIN..."
     if ! domain_resolves "www.$DOMAIN"; then
 		log_info "www.$DOMAIN does not resolve. Issuing for $DOMAIN only."
-		certbot --nginx -d "$DOMAIN" --agree-tos
+		certbot --nginx -d "$DOMAIN" --email "$CERTBOT_EMAIL" --non-interactive --agree-tos
 	else
-		certbot --nginx -d "$DOMAIN" -d "www.$DOMAIN" --agree-tos
+		certbot --nginx -d "$DOMAIN" -d "www.$DOMAIN" --non-interactive --agree-tos
 	fi
 else
     log_info "Certificate exists. Running renewal check..."
