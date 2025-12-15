@@ -5,14 +5,17 @@ set -euo pipefail
 # =========================
 # Logging
 # =========================
+LOG_FILE="/var/log/setup.log"
+exec > >(tee -a "$LOG_FILE") 2>&1
+
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 
-log_info() { echo -e "\n${GREEN}[INFO]${NC} $1"; }
-log_error() { echo -e "\n${RED}[ERROR]${NC} $1"; }
-log_status() { echo -e "${BLUE}[STATUS]${NC} $1"; }
+log_info() { printf "\n${GREEN}[INFO]${NC} %s\n" "$1"; }
+log_error() { printf "\n${RED}[ERROR]${NC} %s\n" "$1"; }
+log_status() { printf "${BLUE}[STATUS]${NC} %s\n" "$1"; }
 
 # =========================
 # System Update + Packages
@@ -237,6 +240,7 @@ log_status "Zsh version: $(zsh --version)"
 log_status "Default shell: $SHELL"
 log_status "GitHub SSH Key: "
 cat ~/.ssh/id_rsa.pub
+log_info "Check GitHub SSH connection: ${BLUE}ssh -T git@github.com"
 
 log_info "Setup completed successfully!"
-log_info "Restart your system for changes to be fully applied!"
+log_info "Restart your system for changes to be fully applied!\n"

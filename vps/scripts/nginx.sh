@@ -28,10 +28,14 @@ if $VERBOSE; then
     set -x
 fi
 
-GREEN='\033[0;32m'; RED='\033[0;31m'; NC='\033[0m'
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+BLUE='\033[0;34m'
+NC='\033[0m'
 
-log_info() { echo -e "${GREEN}[INFO]${NC} $1"; }
-log_error() { echo -e "${RED}[ERROR]${NC} $1"; }
+log_info() { printf "\n${GREEN}[INFO]${NC} %s\n" "$1"; }
+log_error() { printf "\n${RED}[ERROR]${NC} %s\n" "$1"; }
+log_status() { printf "${BLUE}[STATUS]${NC} %s\n" "$1"; }
 
 # --- Ensure Running as Root ---
 if [ "$EUID" -ne 0 ]; then
@@ -120,7 +124,7 @@ ufw allow 'Nginx Full'
 
 # --- Prompt for Application Port ---
 while true; do
-    read -p "Enter the port number for your application: " APP_PORT
+    read -p "Enter the port number for your application: " APP_PORT </dev/tty
     if ! validate_port "$APP_PORT"; then
         log_error "Invalid port. Must be 1–65535."
         continue
@@ -133,7 +137,7 @@ while true; do
 done
 
 # --- Prompt for Domain & Email ---
-read -p "Enter your domain (e.g. example.com): " DOMAIN
+read -p "Enter your domain (e.g. example.com): " DOMAIN </dev/tty
 if ! [[ "$DOMAIN" =~ ^([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$ ]]; then
     log_error "Invalid domain name."
     exit 1
@@ -201,4 +205,4 @@ if ! crontab -l | grep -q 'certbot renew'; then
         log_error "Failed to add certbot renew cron job, continuing..."
 fi
 
-log_info "Deployment complete! Your site is live at https://$DOMAIN"
+log_info "Deployment complete! Your site is live on https://$DOMAIN"
