@@ -82,10 +82,10 @@ fi
 
 
 # =========================
-# PM2, Bun and PNPM
+# PM2 and PNPM
 # =========================
-log_info "Checking and installing PM2, Bun, and PNPM..."
-for pkg in pm2 bun pnpm; do
+log_info "Checking and installing PM2 and PNPM..."
+for pkg in pm2 pnpm; do
     if npm list -g --depth=0 "$pkg" >/dev/null 2>&1; then
         log_info "$pkg is already installed globally, skipping..."
     else
