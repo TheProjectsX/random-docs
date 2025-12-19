@@ -214,15 +214,19 @@ sudo systemctl enable --now nginx
 log_info "Setting up GitHub SSH"
 read -p "Enter GitHub Email: " EMAIL </dev/tty
 
-if [ -f ~/.ssh/id_rsa ]; then
-    rm -rf ~/.ssh/id_rsa
+if [ -n "$EMAIL" ]; then
+    if [ -f ~/.ssh/id_rsa ]; then
+        rm -f ~/.ssh/id_rsa
+    fi
+
+    ssh-keygen -t rsa -b 4096 -C "$EMAIL" -f ~/.ssh/id_rsa -N ""
+    log_info "Created new SSH key"
+
+    eval "$(ssh-agent -s)"
+    ssh-add ~/.ssh/id_rsa
+else
+    log_info "No email provided, skipping SSH setup"
 fi
-
-ssh-keygen -t rsa -b 4096 -C "$EMAIL" -f ~/.ssh/id_rsa -N ""
-log_info "Created new SSH key"
-
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_rsa
 
 # =========================
 # Status Checks
