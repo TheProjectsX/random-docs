@@ -238,13 +238,16 @@ log_status "Nginx service: $(systemctl is-active nginx)"
 # =========================
 # Version Info
 # =========================
-log_status "\nNode version: $(node -v)"
+log_status "------------------------"
+log_status "Node version: $(node -v)"
 log_status "NPM version: $(npm -v)"
 log_status "Zsh version: $(zsh --version)"
 log_status "Default shell: $SHELL"
-log_status "GitHub SSH Key: "
-cat ~/.ssh/id_rsa.pub
-log_info "Check GitHub SSH connection: ${BLUE}ssh -T git@github.com"
+if [ -f ~/.ssh/id_rsa.pub ]; then
+    log_status "GitHub SSH Key: "
+    cat ~/.ssh/id_rsa.pub
+    log_info "Check GitHub SSH connection: ${BLUE}ssh -T git@github.com"
+fi
 
 log_info "Setup completed successfully!"
 log_info "Restart your system for changes to be fully applied!\n"
