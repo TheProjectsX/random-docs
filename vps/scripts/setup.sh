@@ -246,7 +246,7 @@ log_status "Default shell: $SHELL"
 if [ -f ~/.ssh/id_rsa.pub ]; then
     log_status "GitHub SSH Key: "
     cat ~/.ssh/id_rsa.pub
-    log_info "Check GitHub SSH connection: ${BLUE}ssh -T git@github.com"
+    log_info "Check GitHub SSH connection: ssh -T git@github.com"
 fi
 
 log_info "Setup completed successfully!"
