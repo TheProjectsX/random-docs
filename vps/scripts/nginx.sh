@@ -227,9 +227,9 @@ if [ ! -d "/etc/letsencrypt/live/$DOMAIN" ]; then
     log_info "Issuing certificate for $DOMAIN..."
     if ! domain_resolves "www.$DOMAIN"; then
 		log_info "www.$DOMAIN does not resolve. Issuing for $DOMAIN only."
-		certbot --nginx -d "$DOMAIN" --email "$CERTBOT_EMAIL" --non-interactive --agree-tos
+		certbot --nginx -d "$DOMAIN" --email "$CERTBOT_EMAIL" --agree-tos --non-interactive
 	else
-		certbot --nginx -d "$DOMAIN" -d "www.$DOMAIN" --non-interactive --agree-tos
+		certbot --nginx -d "$DOMAIN" -d "www.$DOMAIN" --agree-tos --non-interactive
 	fi
 else
     log_info "Certificate exists. Running renewal check..."
