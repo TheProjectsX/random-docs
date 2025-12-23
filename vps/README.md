@@ -1,19 +1,37 @@
 # VPS Setup for MERN Stack
 
+## Table of Contents:
+
+-   [Login to VPS](#login-to-vps)
+-   [Install Zsh](#install-zsh)
+-   [Install NVM and NodeJS](#install-nvm-and-nodejs)
+-   [Install MongoDB](#install-mongodb)
+-   [System Configurations](#system-configurations)
+    -   [Generate GitHub SSH Key](#generate-github-ssh-key)
+    -   [Enable Uncomplicated Firewall (UFW)](#enable-uncomplicated-firewall-ufw)
+    -   [Install pm2](#install-pm2)
+    -   [Install Nginx](#install-nginx)
+    -   [Use certbot for SSL (https)](#use-certbot-for-ssl-https)
+
 ## One Click Installation
-Below scripts can do the whole manual work automatically. Used Bash to Create it. 
+
+Below scripts can do the whole manual work automatically. Used Bash to Create it.
+
 ### Setup VPS
-``` bash
+
+```bash
 curl -fsSL https://raw.githubusercontent.com/TheProjectsX/random-docs/refs/heads/main/vps/scripts/setup.sh | bash
 ```
+
 Or you can also copy paste [this file](./scripts/setup.sh) in your VPS and run Manually.
 
 ### Create Nginx Configuration
-``` bash
+
+```bash
 curl -fsSL https://raw.githubusercontent.com/TheProjectsX/random-docs/refs/heads/main/vps/scripts/nginx.sh | bash
 ```
-Or you can also copy paste [this file](./scripts/nginx.sh) in your VPS and run Manually.
 
+Or you can also copy paste [this file](./scripts/nginx.sh) in your VPS and run Manually.
 
 ## Login to VPS
 
@@ -32,7 +50,7 @@ ssh root@0.0.0.0
 -   After that, if asks for any confirmation, type `yes` and hit enter.
 -   Then it will ask for Password, type of paste your password and hit enter.
 -   NOTE: The password won't be visible.
-You can also use some SSH Host manager like Termius
+    You can also use some SSH Host manager like Termius
 
 ## Install Zsh
 
@@ -198,6 +216,9 @@ sudo ufw status
 npm i -g pm2
 
 # Start an Application
+# - Go to the Project Folder
+# - Build the project using preferred builder
+# - Run the Command:
 pm2 start "npm run start" --name "test_server"
 
 # List processes
@@ -207,10 +228,10 @@ pm2 ls
 pm2 logs [process number or name]
 
 # Restart process
-pm2 restart [process number or name]
+pm2 restart [process number or name or 'all']
 
 # Stop process
-pm2 stop [process number or name]
+pm2 stop [process number or name or 'all']
 ```
 
 ### Install Nginx
