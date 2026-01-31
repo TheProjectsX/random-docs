@@ -58,6 +58,7 @@ You’ll be asked for:
 
 - Name
 - Email
+- Passphrase (If you want extra security, you can add it. But it will require you to give Passphrase every time. And without a GUI, it will give error. It's better to skip it)
 
 ---
 
