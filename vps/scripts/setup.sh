@@ -13,9 +13,9 @@ RED='\033[0;31m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 
-log_info() { printf "\n${GREEN}[INFO]${NC} %s\n" "$1"; }
-log_error() { printf "\n${RED}[ERROR]${NC} %s\n" "$1"; }
-log_status() { printf "${BLUE}[STATUS]${NC} %s\n" "$1"; }
+log_info() { printf "\n${GREEN}[INFO]${NC} %b\n" "$1"; }
+log_error() { printf "\n${RED}[ERROR]${NC} %b\n" "$1"; }
+log_status() { printf "${BLUE}[STATUS]${NC} %b\n" "$1"; }
 
 # =========================
 # System Update + Packages
