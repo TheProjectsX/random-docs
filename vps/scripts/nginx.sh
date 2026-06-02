@@ -140,14 +140,20 @@ ufw allow 'Nginx Full'
 # --- Prompt for Application Port ---
 while true; do
     read -p "Enter the port number for your application: " APP_PORT </dev/tty
+    
+    [[ -z "$APP_PORT" ]] && {
+        log_info "No port provided. Exiting."
+        exit 0
+    }
+
     if ! validate_port "$APP_PORT"; then
         log_error "Invalid port. Must be 1–65535."
         continue
     fi
-    if ! check_port_free "$APP_PORT"; then
-        log_error "Port $APP_PORT is in use."
-        continue
-    fi
+    # if ! check_port_free "$APP_PORT"; then
+        # log_error "Port $APP_PORT is in use."
+        # continue
+    # fi
     break
 done
 
